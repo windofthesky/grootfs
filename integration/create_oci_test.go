@@ -167,7 +167,7 @@ var _ = Describe("Create with OCI images", func() {
 			baseImageURL = integration.String2URL(fmt.Sprintf("oci:///%s/assets/oci-test-image/opq-whiteouts-busybox:latest", workDir))
 		})
 
-		It("empties the folder contents but keeps the dir", func() {
+		FIt("empties the folder contents but keeps the dir", func() {
 			containerSpec, err := runner.Create(groot.CreateSpec{
 				BaseImageURL: baseImageURL,
 				ID:           randomImageID,
@@ -180,7 +180,8 @@ var _ = Describe("Create with OCI images", func() {
 			Expect(whiteoutedDir).To(BeADirectory())
 			contents, err := ioutil.ReadDir(whiteoutedDir)
 			Expect(err).NotTo(HaveOccurred())
-			Expect(contents).To(BeEmpty())
+			Expect(len(contents)).To(Equal(1))
+			Expect(contents[0].Name()).To(Equal("compir"))
 		})
 	})
 
